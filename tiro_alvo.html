@@ -1,0 +1,59 @@
+<canvas id = "tela" width = "600" height = "400"></canvas>
+
+<script>
+	var tela = document.getElementById("tela");
+	var c = tela.getContext("2d");
+	
+	var cor = function(cores){
+		c.fillStyle = cores;
+		c.beginPath();
+	} 
+	var circulo = function(x,y,raio){
+		c.arc(x, y, raio, 0, 2 * Math.PI);
+		c.fill();
+	}
+	var desenhaAlvo = function(x,y){
+		var raio = 40;
+		cor("white")
+		circulo(x,y,raio);
+		cor("red")
+		circulo(x,y,raio-10);
+		cor("white")
+		circulo(x,y,raio-20);
+		cor("red")
+		circulo(x,y,raio-30);
+	}
+	var sorteia = function(valor){
+		return Math.round(Math.random()*valor);
+	}
+	var limpa  = function(){
+			c.clearRect(0,0,600,400);
+		
+	}
+		var alvoX;
+		var alvoY;
+		
+		var desenha = function(){
+			limpa();
+			alvoX = sorteia(600);
+			alvoY = sorteia(400);
+	console.log("Alvo X: "+alvoX+" Alvo Y: "+alvoY);
+			desenhaAlvo(alvoX,alvoY);
+		}
+		var pontuacao = 0;
+	var atira = function(evento){
+		posX = evento.pageX - tela.offsetLeft;
+		posY = evento.pageY - tela.offsetTop;
+	
+		if ((Math.abs(alvoX - posX) <= 10) && (Math.abs(alvoX - posX) >= 0)&&(Math.abs(alvoY - posY) <= 10) && (Math.abs(alvoY - posY) >= 0)){
+			limpa();
+			desenha()	;
+			pontuacao+=10;
+		}
+	
+	console.log("Pontuação : "+pontuacao);
+	console.log("Tiro X: "+posX+" pos Y: "+posY);
+	}
+	setInterval(desenha, 12000);
+	tela.onclick = atira;
+</script>
