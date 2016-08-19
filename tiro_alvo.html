@@ -1,3 +1,5 @@
+<meta charset = "utf-8">
+<h3>Pontuação : <h3><input id= "pontos">
 <canvas id = "tela" width = "600" height = "400"></canvas>
 
 <script>
@@ -24,7 +26,7 @@
 		circulo(x,y,raio-30);
 	}
 	var sorteia = function(valor){
-		return Math.round(Math.random()*valor);
+		return Math.floor(Math.random()*valor);
 	}
 	var limpa  = function(){
 			c.clearRect(0,0,600,400);
@@ -40,15 +42,26 @@
 	console.log("Alvo X: "+alvoX+" Alvo Y: "+alvoY);
 			desenhaAlvo(alvoX,alvoY);
 		}
+		//verifica se a posição do tiro e no centro do circulo vermelho
+		var acertou = function(posX , posY , limMaior , limMenor){
+			if ((( posX <= limMaior) && ( posX >= limMenor))&&((posY <= limMaior) && (posY >= limMenor))){
+				return true;
+			}else{
+				return false;
+			}
+			
+		}
 		var pontuacao = 0;
 	var atira = function(evento){
 		posX = evento.pageX - tela.offsetLeft;
 		posY = evento.pageY - tela.offsetTop;
-	
-		if ((Math.abs(alvoX - posX) <= 10) && (Math.abs(alvoX - posX) >= 0)&&(Math.abs(alvoY - posY) <= 10) && (Math.abs(alvoY - posY) >= 0)){
+		var tiroX =	Math.abs(alvoX - posX);
+		var tiroY = Math.abs(alvoY - posY);
+		if (acertou(tiroX,tiroY,10,0) == true){
 			limpa();
-			desenha()	;
+			desenha();
 			pontuacao+=10;
+			document.getElementById("pontos").value = pontuacao;
 		}
 	
 	console.log("Pontuação : "+pontuacao);
